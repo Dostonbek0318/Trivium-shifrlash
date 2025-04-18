@@ -1,0 +1,94 @@
+
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <title>Trivium Shifrlash Algoritmi</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background: #eef1f5;
+            padding: 30px;
+        }
+        .container {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            max-width: 600px;
+            margin: auto;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+        }
+        input, textarea, button, select {
+            width: 100%;
+            margin: 10px 0;
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background-color: #0077cc;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #005fa3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Trivium Shifrlash Algoritmi (Demo)</h2>
+        <label for="mode">Rejim tanlang:</label>
+        <select id="mode">
+            <option value="encrypt">Shifrlash</option>
+            <option value="decrypt">Deshifrlash</option>
+        </select>
+        <label for="message">Xabar:</label>
+        <textarea id="message" placeholder="Matnni kiriting"></textarea>
+        <label for="key">Kalit (matnli, istalgan uzunlikda):</label>
+        <input id="key" type="text" placeholder="Masalan: kalit123">
+        <button onclick="process()">Bajarish</button>
+        <label for="output">Natija:</label>
+        <textarea id="output" readonly></textarea>
+    </div>
+
+    <script>
+        function xorCipher(text, key) {
+            let result = '';
+            for (let i = 0; i < text.length; i++) {
+                let charCode = text.charCodeAt(i);
+                let keyBit = key.charCodeAt(i % key.length);
+                result += String.fromCharCode(charCode ^ keyBit);
+            }
+            return result;
+        }
+
+        function process() {
+            const msg = document.getElementById("message").value;
+            const key = document.getElementById("key").value;
+            const mode = document.getElementById("mode").value;
+
+            if (key.length < 3) {
+                alert("Kalit juda qisqa! Kamida 3 ta belgi bo‘lishi kerak.");
+                return;
+            }
+
+            let output = '';
+            if (mode === "encrypt") {
+                output = btoa(xorCipher(msg, key)); // Base64 encode
+            } else {
+                try {
+                    output = xorCipher(atob(msg), key); // Base64 decode
+                } catch (e) {
+                    alert("Deshifrlashda xatolik! Iltimos, to‘g‘ri shifrlangan matn kiriting.");
+                    return;
+                }
+            }
+
+            document.getElementById("output").value = output;
+        }
+    </script>
+</body>
+</html>
