@@ -1,0 +1,71 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Trivium Shifrlash Algoritmi</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 20px;
+            background: #f4f4f4;
+        }
+        .container {
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            max-width: 600px;
+            margin: auto;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        input, textarea, button {
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Trivium Shifrlash Algoritmi (Demo)</h2>
+        <label for="message">Xabar:</label>
+        <textarea id="message" placeholder="Shifrlanadigan xabarni kiriting"></textarea>
+        <label for="key">Kalit (80 bit):</label>
+        <input id="key" type="text" placeholder="Masalan: 1100101... (80 ta 0 va 1)">
+        <button onclick="encrypt()">Shifrlash</button>
+        <label for="output">Shifrlangan natija:</label>
+        <textarea id="output" readonly></textarea>
+    </div>
+
+    <script>
+        function triviumEncrypt(text, key) {
+            // Faqat test uchun oddiy, haqiqiy Trivium emas (demo variant)
+            let result = '';
+            for (let i = 0; i < text.length; i++) {
+                let charCode = text.charCodeAt(i);
+                let keyBit = key.charCodeAt(i % key.length);
+                result += String.fromCharCode(charCode ^ keyBit);
+            }
+            return btoa(result); // Base64
+        }
+
+        function encrypt() {
+            const msg = document.getElementById("message").value;
+            const key = document.getElementById("key").value;
+            if (key.length < 10) {
+                alert("Kalit juda qisqa! Kamida 10 ta belgi bo‘lishi kerak.");
+                return;
+            }
+            const encrypted = triviumEncrypt(msg, key);
+            document.getElementById("output").value = encrypted;
+        }
+    </script>
+</body>
+</html>
